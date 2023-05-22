@@ -1,0 +1,31 @@
+spring.profiles.active: local
+# Prevent the embedded Tomcat from opening a TCP/IP port.
+server.port: -1
+---
+spring.config.activate.on-profile: local
+
+armeria:
+  ports:
+    - port: 8080
+      protocols:
+        - HTTP
+
+spring:
+  devtools:
+    restart:
+      enabled: true
+    remote:
+      restart:
+        enabled: true
+    livereload:
+      enabled: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/test_database
+    username: test_user
+    password: test_password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+logging:
+  level:
+    root: WARN
+    more.practice.armeriaspring: DEBUG

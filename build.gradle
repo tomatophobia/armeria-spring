@@ -27,6 +27,9 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     runtimeOnly 'com.mysql:mysql-connector-j'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation "com.linecorp.armeria:armeria:1.23.1"
+    implementation "com.linecorp.armeria:armeria-spring-boot3-autoconfigure:1.23.1"
+    implementation "com.linecorp.armeria:armeria-tomcat10:1.23.1"
 }
 
 tasks.named('test') {
