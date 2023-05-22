@@ -1,8 +1,10 @@
 package more.practice.armeriaspring.config;
 
+import com.linecorp.armeria.server.HttpService;
 import com.linecorp.armeria.server.healthcheck.HealthChecker;
 import com.linecorp.armeria.server.tomcat.TomcatService;
 import com.linecorp.armeria.spring.ArmeriaServerConfigurator;
+import more.practice.armeriaspring.controller.TodoAnnotatedService;
 import org.apache.catalina.connector.Connector;
 import org.springframework.boot.web.embedded.tomcat.TomcatWebServer;
 import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
@@ -29,8 +31,13 @@ public class WebConfiguration {
     public TomcatService tomcatService(ServletWebServerApplicationContext applicationContext) {
         return TomcatService.of(getConnector(applicationContext));
     }
+
     @Bean
-    public ArmeriaServerConfigurator armeriaServerConfigurator(TomcatService tomcatService) {
-        return sb -> sb.service("prefix:/", tomcatService);
+    public ArmeriaServerConfigurator armeriaServerConfigurator(TomcatService tomcatService, TodoAnnotatedService todoAnnotatedService) {
+        return serverBuilder -> {
+            serverBuilder
+                    .serviceUnder("/", tomcatService)
+                    .annotatedService("/armeria", todoAnnotatedService);
+        };
     }
 }
