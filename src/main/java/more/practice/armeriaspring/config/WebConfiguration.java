@@ -1,6 +1,5 @@
 package more.practice.armeriaspring.config;
 
-import com.linecorp.armeria.server.HttpService;
 import com.linecorp.armeria.server.healthcheck.HealthChecker;
 import com.linecorp.armeria.server.tomcat.TomcatService;
 import com.linecorp.armeria.spring.ArmeriaServerConfigurator;

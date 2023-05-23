@@ -1,4 +1,4 @@
-package more.practice.armeriaspring.controller;
+package more.practice.armeriaspring.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

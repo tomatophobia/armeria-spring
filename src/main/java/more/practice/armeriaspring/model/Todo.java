@@ -1,11 +1,11 @@
-package more.practice.armeriaspring.controller;
+package more.practice.armeriaspring.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.linecorp.armeria.common.annotation.Nullable;
 
 public class Todo {
-    private final long id;
+    private final int id;
     private final String value;
     @Nullable
     private final Long checkedAt;
@@ -13,23 +13,27 @@ public class Todo {
     private final long updatedAt;
 
     @JsonCreator
-    public Todo(@JsonProperty("id") long id, @JsonProperty("value") String value) {
+    public Todo(@JsonProperty("id") int id, @JsonProperty("value") String value) {
         this(id, value, System.currentTimeMillis());
     }
 
-    public Todo(long id, String value, long createdAt) {
+    public Todo(int id, String value, long createdAt) {
         this(id, value, createdAt, createdAt);
     }
 
-    public Todo(long id, String value, long createdAt, long updatedAt) {
+    public Todo(int id, String value, long createdAt, long updatedAt) {
+        this(id, value, null, createdAt, updatedAt);
+    }
+
+    public Todo(int id, String value, @Nullable Long checkedAt, long createdAt, long updatedAt) {
         this.id = id;
         this.value = value;
-        checkedAt = null;
+        this.checkedAt = checkedAt;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
