@@ -1,8 +1,13 @@
 package more.practice.armeriaspring.config;
 
+import com.linecorp.armeria.client.WebClient;
+import com.linecorp.armeria.client.logging.LoggingClient;
+import com.linecorp.armeria.common.HttpHeaderNames;
+import com.linecorp.armeria.common.MediaType;
 import com.linecorp.armeria.server.healthcheck.HealthChecker;
 import com.linecorp.armeria.server.tomcat.TomcatService;
 import com.linecorp.armeria.spring.ArmeriaServerConfigurator;
+import more.practice.armeriaspring.controller.JokeAnnotatedService;
 import more.practice.armeriaspring.controller.TodoAnnotatedService;
 import org.apache.catalina.connector.Connector;
 import org.springframework.boot.web.embedded.tomcat.TomcatWebServer;
@@ -12,6 +17,14 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class WebConfiguration {
+    @Bean
+    public WebClient dadJokeAPIClient() {
+        return WebClient.builder("https://icanhazdadjoke.com")
+                .addHeader(HttpHeaderNames.ACCEPT, MediaType.JSON)
+                .decorator(LoggingClient.newDecorator())
+                .build();
+    }
+
     public static Connector getConnector(ServletWebServerApplicationContext applicationContext) {
         final TomcatWebServer container = (TomcatWebServer) applicationContext.getWebServer();
 
@@ -32,11 +45,13 @@ public class WebConfiguration {
     }
 
     @Bean
-    public ArmeriaServerConfigurator armeriaServerConfigurator(TomcatService tomcatService, TodoAnnotatedService todoAnnotatedService) {
+    public ArmeriaServerConfigurator armeriaServerConfigurator(TomcatService tomcatService, TodoAnnotatedService todoAnnotatedService, JokeAnnotatedService jokeAnnotatedService) {
         return serverBuilder -> {
             serverBuilder
                     .serviceUnder("/", tomcatService)
-                    .annotatedService("/armeria", todoAnnotatedService);
+                    .annotatedService("/armeria", todoAnnotatedService)
+                    .annotatedService("/armeria", jokeAnnotatedService);
+
         };
     }
 }
