@@ -25,6 +25,12 @@ spring:
     password: test_password
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: auditevents, beans, conditions, configprop, env, health, heapdump, httptrace, info, loggers, mappings, metrics, scheduledtasks, threaddump
+
 logging:
   level:
     root: WARN
