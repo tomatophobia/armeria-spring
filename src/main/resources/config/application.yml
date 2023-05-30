@@ -9,6 +9,11 @@ armeria:
     - port: 8080
       protocols:
         - HTTP
+  internal-services:
+    include: metrics
+    port: 8080
+#  enable-metrics: true
+#  metrics-path: /internal/metrics
 
 spring:
   devtools:

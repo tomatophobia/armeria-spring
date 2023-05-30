@@ -4,9 +4,18 @@ import com.linecorp.armeria.client.WebClient;
 import com.linecorp.armeria.client.logging.LoggingClient;
 import com.linecorp.armeria.common.HttpHeaderNames;
 import com.linecorp.armeria.common.MediaType;
+import com.linecorp.armeria.common.metric.MeterIdPrefixFunction;
 import com.linecorp.armeria.server.healthcheck.HealthChecker;
+import com.linecorp.armeria.server.metric.MetricCollectingService;
+import com.linecorp.armeria.server.metric.MetricCollectingServiceBuilder;
+import com.linecorp.armeria.server.metric.PrometheusExpositionService;
 import com.linecorp.armeria.server.tomcat.TomcatService;
 import com.linecorp.armeria.spring.ArmeriaServerConfigurator;
+import com.linecorp.armeria.spring.MetricCollectingServiceConfigurator;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import io.micrometer.prometheus.PrometheusConfig;
+import io.micrometer.prometheus.PrometheusMeterRegistry;
 import more.practice.armeriaspring.controller.JokeAnnotatedService;
 import more.practice.armeriaspring.controller.TodoAnnotatedService;
 import org.apache.catalina.connector.Connector;
@@ -45,13 +54,36 @@ public class WebConfiguration {
     }
 
     @Bean
-    public ArmeriaServerConfigurator armeriaServerConfigurator(TomcatService tomcatService, TodoAnnotatedService todoAnnotatedService, JokeAnnotatedService jokeAnnotatedService) {
+    public ArmeriaServerConfigurator armeriaServerConfigurator(
+            TomcatService tomcatService,
+            PrometheusMeterRegistry prometheusMeterRegistry,
+            TodoAnnotatedService todoAnnotatedService,
+            JokeAnnotatedService jokeAnnotatedService
+    ) {
         return serverBuilder -> {
             serverBuilder
                     .serviceUnder("/", tomcatService)
                     .annotatedService("/armeria", todoAnnotatedService)
                     .annotatedService("/armeria", jokeAnnotatedService);
-
         };
+    }
+
+    @Bean
+    public PrometheusMeterRegistry prometheusMeterRegistry() {
+        return new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
+    }
+
+    @Bean
+    public MetricCollectingServiceConfigurator metricCollectingServiceConfigurator() {
+        return builder -> builder
+                .successFunction((context, log) -> {
+                    final int statusCode = log.responseHeaders().status().code();
+                    return statusCode >= 200 && statusCode < 400;
+                });
+    }
+
+    @Bean
+    public MeterIdPrefixFunction meterIdPrefixFunction() {
+        return MeterIdPrefixFunction.ofDefault("my.armeria.service");
     }
 }
