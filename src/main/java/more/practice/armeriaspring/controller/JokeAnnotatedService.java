@@ -1,7 +1,6 @@
 package more.practice.armeriaspring.controller;
 
 import com.linecorp.armeria.client.WebClient;
-import com.linecorp.armeria.common.HttpRequest;
 import com.linecorp.armeria.common.HttpResponse;
 import com.linecorp.armeria.server.annotation.Get;
 import org.slf4j.Logger;

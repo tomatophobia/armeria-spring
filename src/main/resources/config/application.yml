@@ -34,7 +34,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: auditevents, beans, conditions, configprop, env, health, heapdump, httptrace, info, loggers, mappings, metrics, scheduledtasks, threaddump
+        include: auditevents, beans, conditions, configprop, env, health, heapdump, httptrace, info, loggers, mappings, metrics, scheduledtasks, threaddump, prometheus
 
 logging:
   level:

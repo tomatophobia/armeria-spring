@@ -56,7 +56,6 @@ public class WebConfiguration {
     @Bean
     public ArmeriaServerConfigurator armeriaServerConfigurator(
             TomcatService tomcatService,
-            PrometheusMeterRegistry prometheusMeterRegistry,
             TodoAnnotatedService todoAnnotatedService,
             JokeAnnotatedService jokeAnnotatedService
     ) {
@@ -66,11 +65,6 @@ public class WebConfiguration {
                     .annotatedService("/armeria", todoAnnotatedService)
                     .annotatedService("/armeria", jokeAnnotatedService);
         };
-    }
-
-    @Bean
-    public PrometheusMeterRegistry prometheusMeterRegistry() {
-        return new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
     }
 
     @Bean
