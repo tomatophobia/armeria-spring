@@ -61,6 +61,7 @@ public class WebConfiguration {
     ) {
         return serverBuilder -> {
             serverBuilder
+                    .defaultVirtualHost()
                     .serviceUnder("/", tomcatService)
                     .annotatedService("/armeria", todoAnnotatedService)
                     .annotatedService("/armeria", jokeAnnotatedService);

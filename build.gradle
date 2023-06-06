@@ -36,7 +36,7 @@ dependencies {
 
     implementation "com.linecorp.armeria:armeria:1.23.1"
     implementation "com.linecorp.armeria:armeria-spring-boot3-starter:1.23.1"
-//    implementation "com.linecorp.armeria:armeria-spring-boot3-actuator-starter:1.23.1" 무슨 일이 일어나는지 나중에 알아보기 대충 읽어봤을 때 스프링 액츄에이터 앤드포인트에 아르메리아를 연결하는 너낌이었음.
+    implementation "com.linecorp.armeria:armeria-spring-boot3-actuator-starter:1.23.1"
     implementation "com.linecorp.armeria:armeria-tomcat10:1.23.1"
 }
 

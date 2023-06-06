@@ -10,8 +10,8 @@ armeria:
       protocols:
         - HTTP
   internal-services:
-    include: metrics
-    port: 8080
+    include: docs, metrics, health
+    port: 8090
 #  enable-metrics: true
 #  metrics-path: /internal/metrics
 
@@ -35,8 +35,10 @@ management:
     web:
       exposure:
         include: auditevents, beans, conditions, configprop, env, health, heapdump, httptrace, info, loggers, mappings, metrics, scheduledtasks, threaddump, prometheus
+  server:
+    port: 9090
 
 logging:
   level:
-    root: WARN
-    more.practice.armeriaspring: DEBUG
+    root: INFO
+#    more.practice.armeriaspring: DEBUG
