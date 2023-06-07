@@ -3,8 +3,11 @@ package more.practice.armeriaspring.config;
 import com.linecorp.armeria.client.WebClient;
 import com.linecorp.armeria.client.logging.LoggingClient;
 import com.linecorp.armeria.common.HttpHeaderNames;
+import com.linecorp.armeria.common.HttpResponse;
+import com.linecorp.armeria.common.HttpStatus;
 import com.linecorp.armeria.common.MediaType;
 import com.linecorp.armeria.common.metric.MeterIdPrefixFunction;
+import com.linecorp.armeria.server.ServerBuilder;
 import com.linecorp.armeria.server.healthcheck.HealthChecker;
 import com.linecorp.armeria.server.metric.MetricCollectingService;
 import com.linecorp.armeria.server.metric.MetricCollectingServiceBuilder;
@@ -23,6 +26,9 @@ import org.springframework.boot.web.embedded.tomcat.TomcatWebServer;
 import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+
+import java.util.function.Consumer;
 
 @Configuration
 public class WebConfiguration {
@@ -59,12 +65,58 @@ public class WebConfiguration {
             TodoAnnotatedService todoAnnotatedService,
             JokeAnnotatedService jokeAnnotatedService
     ) {
+//        return new ArmeriaServerConfigurator() {
+//            @Override
+//            public void configure(ServerBuilder serverBuilder) {
+//            serverBuilder
+//                    .defaultVirtualHost()
+//                    .service("/test", (ctx, req) -> HttpResponse.of(HttpStatus.OK))
+//                    .serviceUnder("/", tomcatService)
+//                    .annotatedService("/armeria", todoAnnotatedService)
+//                    .annotatedService("/armeria", jokeAnnotatedService);
+//            }
+//        };
         return serverBuilder -> {
             serverBuilder
                     .defaultVirtualHost()
+                    .service("/test", (ctx, req) -> HttpResponse.of(HttpStatus.OK))
                     .serviceUnder("/", tomcatService)
                     .annotatedService("/armeria", todoAnnotatedService)
                     .annotatedService("/armeria", jokeAnnotatedService);
+        };
+    }
+
+    @Bean
+    @Order(3)
+    public ArmeriaServerConfigurator armeriaServerConfigurator2(){
+        return new ArmeriaServerConfigurator() {
+            @Override
+            public void configure(ServerBuilder serverBuilder) {
+
+            }
+        };
+    }
+
+    @Bean
+    @Order(2)
+    public Consumer<ServerBuilder> serverBuilderConsumer() {
+        return new Consumer<ServerBuilder>() {
+            private int num = 1;
+            @Override
+            public void accept(ServerBuilder serverBuilder) {
+
+            }
+        };
+    }
+
+    @Bean
+    @Order(1)
+    public Consumer<ServerBuilder> serverBuilderConsumer2() {
+        return new Consumer<ServerBuilder>() {
+            private int num = 2;
+            @Override
+            public void accept(ServerBuilder serverBuilder) {
+            }
         };
     }
 

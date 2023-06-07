@@ -36,7 +36,7 @@ dependencies {
 
     implementation "com.linecorp.armeria:armeria:1.23.1"
     implementation "com.linecorp.armeria:armeria-spring-boot3-starter:1.23.1"
-    implementation "com.linecorp.armeria:armeria-spring-boot3-actuator-starter:1.23.1"
+//    implementation "com.linecorp.armeria:armeria-spring-boot3-actuator-starter:1.23.1"
     implementation "com.linecorp.armeria:armeria-tomcat10:1.23.1"
 }
 
