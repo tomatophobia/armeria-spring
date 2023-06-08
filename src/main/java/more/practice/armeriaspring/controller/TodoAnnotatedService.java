@@ -63,10 +63,11 @@ public class TodoAnnotatedService {
     }
 
     @Delete("/:id")
+    @ExceptionHandler(BadRequestExceptionHandler.class)
     public HttpResponse delete(@Param Integer id) {
         final int result = todoService.delete(id);
         if (result == 0) {
-            return HttpResponse.of(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new IllegalArgumentException("id does not exist.");
         }
         return HttpResponse.of(HttpStatus.ACCEPTED);
     }

@@ -2,6 +2,7 @@ package more.practice.armeriaspring.controller;
 
 import com.linecorp.armeria.client.WebClient;
 import com.linecorp.armeria.common.HttpResponse;
+import com.linecorp.armeria.server.annotation.Decorator;
 import com.linecorp.armeria.server.annotation.Get;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ public class JokeAnnotatedService {
     }
 
     @Get("/joke")
+//    @Decorator(AuthDecorator.class)
     public HttpResponse get() {
         return dadJokeWebclient.get("/");
     }
