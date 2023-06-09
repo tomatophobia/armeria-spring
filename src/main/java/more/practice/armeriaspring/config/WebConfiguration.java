@@ -5,6 +5,7 @@ import com.linecorp.armeria.client.logging.LoggingClient;
 import com.linecorp.armeria.common.*;
 import com.linecorp.armeria.common.metric.MeterIdPrefixFunction;
 import com.linecorp.armeria.server.ServerBuilder;
+import com.linecorp.armeria.server.annotation.ExceptionHandlerFunction;
 import com.linecorp.armeria.server.healthcheck.HealthChecker;
 import com.linecorp.armeria.server.metric.MetricCollectingService;
 import com.linecorp.armeria.server.metric.MetricCollectingServiceBuilder;
@@ -137,6 +138,11 @@ public class WebConfiguration {
     public MeterIdPrefixFunction meterIdPrefixFunction() {
         return MeterIdPrefixFunction.ofDefault("my.armeria.service");
     }
+
+//    @Bean
+//    public ExceptionHandlerFunction badRequestExceptionHandler() {
+//        return new BadRequestExceptionHandler();
+//    }
 
     @Bean
     public DependencyInjector dependencyInjector() {

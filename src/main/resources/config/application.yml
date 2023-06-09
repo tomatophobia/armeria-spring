@@ -14,6 +14,7 @@ armeria:
     port: 8090
 #  enable-metrics: true
 #  metrics-path: /internal/metrics
+#  enable-auto-injection: true
 
 spring:
   devtools:

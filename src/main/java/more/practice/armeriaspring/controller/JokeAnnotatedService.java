@@ -21,7 +21,7 @@ public class JokeAnnotatedService {
     }
 
     @Get("/joke")
-//    @Decorator(AuthDecorator.class)
+    @Decorator(AuthDecorator.class)
     public HttpResponse get() {
         return dadJokeWebclient.get("/");
     }
