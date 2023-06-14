@@ -9,10 +9,16 @@ armeria:
     - port: 8080
       protocols:
         - HTTP
+    - port: 8081
+      protocols:
+        - HTTP
   internal-services:
-    include: docs, metrics, health
-    port: 8090
-#  enable-metrics: true
+    include: metrics, health, actuator
+#    port: 0
+  health-check-path: /internal/healthcheck
+#    port: 8090
+#  docs-path: /internal/docs
+  enable-metrics: true
 #  metrics-path: /internal/metrics
 #  enable-auto-injection: true
 

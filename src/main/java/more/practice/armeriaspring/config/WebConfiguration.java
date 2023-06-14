@@ -12,6 +12,8 @@ import com.linecorp.armeria.server.metric.MetricCollectingServiceBuilder;
 import com.linecorp.armeria.server.metric.PrometheusExpositionService;
 import com.linecorp.armeria.server.tomcat.TomcatService;
 import com.linecorp.armeria.spring.ArmeriaServerConfigurator;
+import com.linecorp.armeria.spring.DocServiceConfigurator;
+import com.linecorp.armeria.spring.HealthCheckServiceConfigurator;
 import com.linecorp.armeria.spring.MetricCollectingServiceConfigurator;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -86,6 +88,7 @@ public class WebConfiguration {
                     .serviceUnder("/", tomcatService)
                     .annotatedService("/armeria", todoAnnotatedService)
                     .annotatedService("/armeria", jokeAnnotatedService);
+
         };
     }
 
@@ -127,7 +130,7 @@ public class WebConfiguration {
 
     @Bean
     public MetricCollectingServiceConfigurator metricCollectingServiceConfigurator() {
-        return builder -> builder
+        return metricCollectingServiceBuilder -> metricCollectingServiceBuilder
                 .successFunction((context, log) -> {
                     final int statusCode = log.responseHeaders().status().code();
                     return statusCode >= 200 && statusCode < 400;
@@ -154,5 +157,18 @@ public class WebConfiguration {
                         )
                 )
         );
+    }
+
+    @Bean
+    public DocServiceConfigurator docServiceConfigurator() {
+        return docServiceBuilder -> docServiceBuilder
+                .exampleRequests(TodoAnnotatedService.class, "create", "{\"id\":\"42\", \"value\":\"foo bar\"}");
+    }
+
+    @Bean
+    public HealthCheckServiceConfigurator healthCheckServiceConfigurator() {
+        return healthCheckServiceBuilder -> healthCheckServiceBuilder
+                .updatable(true)
+                .startUnhealthy();
     }
 }
